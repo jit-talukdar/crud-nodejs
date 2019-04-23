@@ -27,7 +27,7 @@ const Registration = (req, res, next) => {
     if(Object.keys(errors).length) {
         const filePath = "./uploads/" + req.body.filename;
         fs.unlinkSync(filePath);
-        res.status(403).json(errors);
+        res.status(500).json(errors);
     } else {
         next();
     }

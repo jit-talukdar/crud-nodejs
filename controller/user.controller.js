@@ -2,16 +2,14 @@ const bcrypt = require('bcrypt');
 const usermodel = require('../model/user.model');
 const fs = require('fs');
 
-const register = (req, res) => {
+const register = (req, res, next) => {
     // console.log(req.body);
     usermodel.register(req.body, function(error, rs) {
         resp = {};
         if (error) {
             const filePath = "./uploads/" + req.body.filename;
             fs.unlinkSync(filePath);
-            resp.status = 403;
-            resp.msg = error.code;
-            res.status(403).json(resp);
+            next(new Error(error.code));
         } else {
             if (rs.affectedRows) {
                 resp.status = 200;
